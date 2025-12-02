@@ -50,7 +50,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3879,
+    port: 6879,
     proxy: {
       '/talearc': {
         target: devServer,

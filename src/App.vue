@@ -1,11 +1,29 @@
-<script setup lang="ts"></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="w-full h-100vh flex box-border relative overflow-hidden">
+    <MenuList class="shrink-0" />
+    <div class="w-full h-full box-border p-4">
+      <Transition name="page">
+        <RouterView />
+      </Transition>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<script setup lang="ts">
+
+
+</script>
+
+<style scoped>
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+}
+</style>
