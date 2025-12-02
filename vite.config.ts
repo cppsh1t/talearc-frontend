@@ -10,7 +10,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-const devServer = 'http://10.37.126.117:10315/'
+const devServer = 'http://localhost:5278/'
 
 // https://vite.dev/config/
 export default defineConfig({

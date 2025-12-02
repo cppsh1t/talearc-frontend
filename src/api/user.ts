@@ -25,7 +25,7 @@ export type LoginResponse = {
 
 export function login(form: LoginForm) {
   return request<Response<LoginResponse>>({
-    url: '/user/login',
+    url: '/auth/login',
     method: 'POST',
     data: form,
   })
@@ -33,8 +33,15 @@ export function login(form: LoginForm) {
 
 export function register(form: RegisterForm) {
   return request<Response<LoginResponse>>({
-    url: '/user/register',
+    url: '/auth/register',
     method: 'POST',
     data: form,
+  })
+}
+
+export function getUserInfo() {
+  return request<Response<User>>({
+    url: '/auth/userinfo',
+    method: 'GET',
   })
 }
