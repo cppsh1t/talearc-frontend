@@ -18,6 +18,7 @@ declare module 'vue' {
     ElInput: typeof import('element-plus/es')['ElInput']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Test: typeof import('./src/components/Test.vue')['default']
   }
 }
 
@@ -29,4 +30,5 @@ declare global {
   const ElInput: typeof import('element-plus/es')['ElInput']
   const RouterLink: typeof import('vue-router')['RouterLink']
   const RouterView: typeof import('vue-router')['RouterView']
+  const Test: typeof import('./src/components/Test.vue')['default']
 }

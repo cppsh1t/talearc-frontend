@@ -1,0 +1,4134 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "TaleArc Backend API",
+    "version": "v1"
+  },
+  "paths": {
+    "/talearc/api/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "用户注册",
+        "requestBody": {
+          "description": "注册表单",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterForm"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterForm"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "注册成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "注册失败（用户已存在或密钥无效）",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "用户登录",
+        "requestBody": {
+          "description": "登录表单",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginForm"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginForm"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登录成功，返回 Token 和用户信息",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDtoApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDtoApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponseDtoApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "登录失败，用户名或密码错误",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/auth/userinfo": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "获取当前用户信息",
+        "responses": {
+          "200": {
+            "description": "成功返回用户信息",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDtoApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "用户登出",
+        "responses": {
+          "200": {
+            "description": "登出成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/novels/{novelId}/chapter": {
+      "get": {
+        "tags": ["Chapter"],
+        "summary": "获取章节列表",
+        "parameters": [
+          {
+            "name": "novelId",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回章节列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterResponseListApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterResponseListApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterResponseListApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Chapter"],
+        "summary": "创建章节",
+        "parameters": [
+          {
+            "name": "novelId",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "章节信息",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChapterRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChapterRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChapterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "创建成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/novels/{novelId}/chapter/{id}": {
+      "get": {
+        "tags": ["Chapter"],
+        "summary": "获取章节详情（含内容）",
+        "parameters": [
+          {
+            "name": "novelId",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "章节ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回章节详情",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说或章节不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Chapter"],
+        "summary": "更新章节",
+        "parameters": [
+          {
+            "name": "novelId",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "章节ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "更新的章节信息",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChapterRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChapterRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChapterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChapterApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说或章节不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Chapter"],
+        "summary": "删除章节",
+        "parameters": [
+          {
+            "name": "novelId",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "章节ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说或章节不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/character": {
+      "get": {
+        "tags": ["Character"],
+        "summary": "获取用户的角色（分页）",
+        "parameters": [
+          {
+            "name": "worldViewId",
+            "in": "query",
+            "description": "世界观ID（可选）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码（从1开始）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "每页大小",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回角色列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponsePagedResultApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponsePagedResultApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponsePagedResultApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Character"],
+        "summary": "创建角色",
+        "requestBody": {
+          "description": "创建角色请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCharacterRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCharacterRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCharacterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "世界观不存在或无权访问",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/character/{id}": {
+      "get": {
+        "tags": ["Character"],
+        "summary": "根据ID获取角色",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "角色ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回角色详情",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "角色不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Character"],
+        "summary": "更新角色",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "角色ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "更新角色请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCharacterRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCharacterRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCharacterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "角色不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Character"],
+        "summary": "删除角色",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "角色ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "角色不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/character-snapshot": {
+      "get": {
+        "tags": ["CharacterSnapshot"],
+        "summary": "获取用户的角色快照（分页）",
+        "parameters": [
+          {
+            "name": "worldViewId",
+            "in": "query",
+            "description": "世界观ID（可选）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "characterId",
+            "in": "query",
+            "description": "角色ID（可选）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码（从1开始）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "每页大小",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回角色快照列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponsePagedResultApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponsePagedResultApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponsePagedResultApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["CharacterSnapshot"],
+        "summary": "创建角色快照",
+        "requestBody": {
+          "description": "创建角色快照请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCharacterSnapshotRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCharacterSnapshotRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCharacterSnapshotRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "世界观或角色不存在或无权访问",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/character-snapshot/{id}": {
+      "get": {
+        "tags": ["CharacterSnapshot"],
+        "summary": "根据ID获取角色快照",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "角色快照ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回角色快照详情",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "角色快照不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["CharacterSnapshot"],
+        "summary": "更新角色快照",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "角色快照ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "更新角色快照请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCharacterSnapshotRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCharacterSnapshotRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCharacterSnapshotRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterSnapshotResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "角色快照不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["CharacterSnapshot"],
+        "summary": "删除角色快照",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "角色快照ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "角色快照不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/misc": {
+      "get": {
+        "tags": ["Misc"],
+        "summary": "获取用户的杂项（分页）",
+        "parameters": [
+          {
+            "name": "worldViewId",
+            "in": "query",
+            "description": "世界观ID（可选）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码（从1开始）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "每页大小",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回杂项列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponsePagedResultApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponsePagedResultApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponsePagedResultApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Misc"],
+        "summary": "创建杂项",
+        "requestBody": {
+          "description": "创建杂项请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMiscRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMiscRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMiscRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "世界观不存在或无权访问",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/misc/{id}": {
+      "get": {
+        "tags": ["Misc"],
+        "summary": "根据ID获取杂项",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "杂项ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回杂项详情",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "杂项不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Misc"],
+        "summary": "更新杂项",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "杂项ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "更新杂项请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMiscRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMiscRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMiscRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MiscResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "杂项不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Misc"],
+        "summary": "删除杂项",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "杂项ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "杂项不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/novel": {
+      "get": {
+        "tags": ["Novel"],
+        "summary": "获取小说列表",
+        "parameters": [
+          {
+            "name": "worldViewId",
+            "in": "query",
+            "description": "世界观ID（可选）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回小说列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelListApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelListApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelListApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Novel"],
+        "summary": "创建小说",
+        "requestBody": {
+          "description": "小说信息",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Novel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Novel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Novel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "创建成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/novel/{id}": {
+      "get": {
+        "tags": ["Novel"],
+        "summary": "获取小说详情",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回小说详情",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Novel"],
+        "summary": "更新小说",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "更新的小说信息",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Novel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Novel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Novel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Novel"],
+        "summary": "删除小说",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "小说ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "小说不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/test/greet": {
+      "post": {
+        "tags": ["Test"],
+        "summary": "发送问候消息",
+        "requestBody": {
+          "description": "问候请求信息",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GreetingForm"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GreetingForm"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GreetingForm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功返回问候消息",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数验证失败",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/test/fail-test": {
+      "get": {
+        "tags": ["Test"],
+        "summary": "模拟服务器错误测试",
+        "responses": {
+          "500": {
+            "description": "服务器内部错误",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/world-event": {
+      "get": {
+        "tags": ["WorldEvent"],
+        "summary": "获取用户的世界事件（分页）",
+        "parameters": [
+          {
+            "name": "worldViewId",
+            "in": "query",
+            "description": "世界观ID（可选）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码（从1开始）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "每页大小",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回世界事件列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponsePagedResultApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponsePagedResultApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponsePagedResultApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["WorldEvent"],
+        "summary": "创建世界事件",
+        "requestBody": {
+          "description": "创建世界事件请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorldEventRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorldEventRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorldEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "世界观不存在或无权访问",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/world-event/list/{worldViewId}": {
+      "get": {
+        "tags": ["WorldEvent"],
+        "summary": "获取指定世界观下的所有世界事件",
+        "parameters": [
+          {
+            "name": "worldViewId",
+            "in": "path",
+            "description": "世界观ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回世界事件列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseListApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseListApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseListApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "世界观不存在或无权访问",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/world-event/{id}": {
+      "get": {
+        "tags": ["WorldEvent"],
+        "summary": "根据ID获取世界事件",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "世界事件ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回世界事件详情",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "世界事件不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["WorldEvent"],
+        "summary": "更新世界事件",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "世界事件ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "更新世界事件请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorldEventRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorldEventRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorldEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldEventResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "世界事件不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["WorldEvent"],
+        "summary": "删除世界事件",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "世界事件ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "世界事件不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/world-view": {
+      "get": {
+        "tags": ["WorldView"],
+        "summary": "获取用户的世界观（分页）",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码（从1开始）",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "每页大小",
+            "style": "form",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回世界观列表",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponsePagedResultApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponsePagedResultApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponsePagedResultApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["WorldView"],
+        "summary": "创建世界观",
+        "requestBody": {
+          "description": "创建世界观请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorldViewRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorldViewRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorldViewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talearc/api/world-view/{id}": {
+      "get": {
+        "tags": ["WorldView"],
+        "summary": "根据ID获取世界观",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "世界观ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "返回世界观详情",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "世界观不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["WorldView"],
+        "summary": "更新世界观",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "世界观ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "更新世界观请求",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorldViewRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorldViewRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateWorldViewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorldViewResponseApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "世界观不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["WorldView"],
+        "summary": "删除世界观",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "世界观ID",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "世界观不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Chapter": {
+        "required": ["novelId", "order", "title", "uuid"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "章节ID",
+            "format": "int32"
+          },
+          "uuid": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "章节UUID（用于文件路径定位）"
+          },
+          "novelId": {
+            "type": "integer",
+            "description": "小说ID",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "description": "章节标题"
+          },
+          "summary": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "章节概述",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "description": "章节排序",
+            "format": "int32"
+          },
+          "referencedSnapshotIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "引用的角色快照ID数组",
+            "nullable": true
+          },
+          "referencedEventIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "引用的事件ID数组",
+            "nullable": true
+          },
+          "referencedMiscIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "引用的杂项ID数组",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "章节实体"
+      },
+      "ChapterApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Chapter"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "ChapterRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "referencedSnapshotIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "referencedEventIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "referencedMiscIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "章节请求DTO"
+      },
+      "ChapterResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uuid": {
+            "type": "string",
+            "nullable": true
+          },
+          "novelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "referencedSnapshotIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "referencedEventIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "referencedMiscIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "章节响应DTO"
+      },
+      "ChapterResponseApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ChapterResponse"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "ChapterResponseListApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChapterResponse"
+            },
+            "description": "响应数据",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "CharacterResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "角色ID",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int32"
+          },
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "snapshotIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "快照ID数组",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "角色名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "角色描述",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "角色响应"
+      },
+      "CharacterResponseApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CharacterResponse"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "CharacterResponsePagedResult": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CharacterResponse"
+            },
+            "description": "数据列表",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "description": "总记录数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "分页结果"
+      },
+      "CharacterResponsePagedResultApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CharacterResponsePagedResult"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "CharacterSnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "快照ID",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int32"
+          },
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "characterId": {
+            "type": "integer",
+            "description": "角色ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "快照名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "快照描述",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "角色快照响应"
+      },
+      "CharacterSnapshotResponseApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CharacterSnapshotResponse"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "CharacterSnapshotResponsePagedResult": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CharacterSnapshotResponse"
+            },
+            "description": "数据列表",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "description": "总记录数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "分页结果"
+      },
+      "CharacterSnapshotResponsePagedResultApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CharacterSnapshotResponsePagedResult"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "CreateCharacterRequest": {
+        "type": "object",
+        "properties": {
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "角色名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "角色描述",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "创建角色请求"
+      },
+      "CreateCharacterSnapshotRequest": {
+        "type": "object",
+        "properties": {
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "characterId": {
+            "type": "integer",
+            "description": "角色ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "快照名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "快照描述",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "创建角色快照请求"
+      },
+      "CreateMiscRequest": {
+        "type": "object",
+        "properties": {
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "杂项名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "杂项描述",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "description": "杂项类型（例如：道具、地点、事件等）",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "创建杂项请求"
+      },
+      "CreateWorldEventRequest": {
+        "type": "object",
+        "properties": {
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "世界事件名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "世界事件描述",
+            "nullable": true
+          },
+          "happenedAt": {
+            "type": "string",
+            "description": "事件发生时间",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "description": "事件结束时间",
+            "format": "date-time"
+          },
+          "relatedCharacterSnapshotIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "关联角色快照ID数组",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "创建世界事件请求"
+      },
+      "CreateWorldViewRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "世界观名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "世界观描述",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "创建世界观请求"
+      },
+      "GreetingForm": {
+        "required": ["name"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "用户姓名",
+            "example": "张三"
+          },
+          "age": {
+            "maximum": 150,
+            "minimum": 1,
+            "type": "integer",
+            "description": "用户年龄",
+            "format": "int32",
+            "example": 25
+          }
+        },
+        "additionalProperties": false,
+        "description": "问候请求表单"
+      },
+      "LoginForm": {
+        "required": ["name", "password"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "用户名",
+            "example": "john"
+          },
+          "password": {
+            "minLength": 1,
+            "type": "string",
+            "description": "密码",
+            "example": "password123"
+          }
+        },
+        "additionalProperties": false,
+        "description": "登录表单"
+      },
+      "LoginResponseDto": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "JWT Token",
+            "nullable": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "additionalProperties": false,
+        "description": "登录响应数据传输对象"
+      },
+      "LoginResponseDtoApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginResponseDto"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "MiscResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "杂项ID",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int32"
+          },
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "杂项名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "杂项描述",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "description": "杂项类型",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "杂项响应"
+      },
+      "MiscResponseApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/MiscResponse"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "MiscResponsePagedResult": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MiscResponse"
+            },
+            "description": "数据列表",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "description": "总记录数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "分页结果"
+      },
+      "MiscResponsePagedResultApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/MiscResponsePagedResult"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "Novel": {
+        "required": ["title", "userId", "worldViewId"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "小说ID",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int32"
+          },
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "description": "小说标题"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "小说简介",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "小说实体"
+      },
+      "NovelApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Novel"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "NovelListApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Novel"
+            },
+            "description": "响应数据",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "ObjectApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "description": "响应数据",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "RegisterForm": {
+        "required": ["name", "password", "registrationKey"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "用户名",
+            "example": "john"
+          },
+          "password": {
+            "minLength": 1,
+            "type": "string",
+            "description": "密码",
+            "example": "password123"
+          },
+          "registrationKey": {
+            "minLength": 1,
+            "type": "string",
+            "description": "注册密钥",
+            "example": "REG-KEY-001"
+          }
+        },
+        "additionalProperties": false,
+        "description": "注册表单"
+      },
+      "StringApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "type": "string",
+            "description": "响应数据",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "UpdateCharacterRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "角色名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "角色描述",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新角色请求"
+      },
+      "UpdateCharacterSnapshotRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "快照名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "快照描述",
+            "nullable": true
+          },
+          "note": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新角色快照请求"
+      },
+      "UpdateMiscRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "杂项名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "杂项描述",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "description": "杂项类型",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新杂项请求"
+      },
+      "UpdateWorldEventRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "世界事件名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "世界事件描述",
+            "nullable": true
+          },
+          "happenedAt": {
+            "type": "string",
+            "description": "事件发生时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endAt": {
+            "type": "string",
+            "description": "事件结束时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "relatedCharacterSnapshotIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "关联角色快照ID数组",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新世界事件请求"
+      },
+      "UpdateWorldViewRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "世界观名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "世界观描述",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新世界观请求"
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "用户名",
+            "nullable": true
+          },
+          "createAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "用户数据传输对象"
+      },
+      "UserDtoApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "WorldEventResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "世界事件ID",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int32"
+          },
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "世界事件名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "世界事件描述",
+            "nullable": true
+          },
+          "happenedAt": {
+            "type": "string",
+            "description": "事件发生时间",
+            "format": "date-time"
+          },
+          "endAt": {
+            "type": "string",
+            "description": "事件结束时间",
+            "format": "date-time"
+          },
+          "relatedCharacterSnapshotIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "关联角色快照ID数组",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "世界事件响应"
+      },
+      "WorldEventResponseApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorldEventResponse"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "WorldEventResponseListApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorldEventResponse"
+            },
+            "description": "响应数据",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "WorldEventResponsePagedResult": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorldEventResponse"
+            },
+            "description": "数据列表",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "description": "总记录数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "分页结果"
+      },
+      "WorldEventResponsePagedResultApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorldEventResponsePagedResult"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "WorldViewResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int32"
+          },
+          "characterIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "角色ID数组",
+            "nullable": true
+          },
+          "miscIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "世界杂项ID数组",
+            "nullable": true
+          },
+          "worldEventIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "世界事件ID数组",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "世界观名称",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "世界观描述",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "备注",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "世界观响应"
+      },
+      "WorldViewResponseApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorldViewResponse"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      },
+      "WorldViewResponsePagedResult": {
+        "type": "object",
+        "properties": {
+          "list": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorldViewResponse"
+            },
+            "description": "数据列表",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "description": "总记录数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "分页结果"
+      },
+      "WorldViewResponsePagedResultApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应状态码",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "description": "响应消息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorldViewResponsePagedResult"
+          }
+        },
+        "additionalProperties": false,
+        "description": "API 响应统一格式"
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Character",
+      "description": "角色管理控制器"
+    },
+    {
+      "name": "CharacterSnapshot",
+      "description": "角色快照管理控制器"
+    },
+    {
+      "name": "Misc",
+      "description": "杂项管理控制器"
+    },
+    {
+      "name": "WorldEvent",
+      "description": "世界事件管理控制器"
+    },
+    {
+      "name": "WorldView",
+      "description": "世界观管理控制器"
+    },
+    {
+      "name": "Chapter",
+      "description": "章节控制器"
+    },
+    {
+      "name": "Novel",
+      "description": "小说控制器"
+    },
+    {
+      "name": "Auth",
+      "description": "认证控制器"
+    }
+  ]
+}
