@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-100vh flex box-border relative overflow-hidden">
     <MenuList class="shrink-0" />
-    <div class="w-full h-full box-border p-4">
+    <div class="w-full h-full">
       <Transition name="page">
         <RouterView />
       </Transition>

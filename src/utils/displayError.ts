@@ -1,4 +1,3 @@
-import { ElMessage } from 'element-plus'
 import { type Response } from '@/api/type'
 
 export default function displayError(e: any) {

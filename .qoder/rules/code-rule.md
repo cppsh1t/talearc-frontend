@@ -39,15 +39,19 @@ swagger.json -> 后端接口的swagger文件
 
 props规范:
 
-```vue
+```ts
 const props = defineProps<{ data: Test }>()
 ```
 
 emit规范:
 
-```vue
+```ts
 const emit = defineEmits<{ (e: 'cb', v: string): void (e: 'click'): void }>()
 ```
+
+## 错误处理规范
+
+使用utils/displayError中的withDisplay来catch错误并进行必要情况下的错误提示
 
 ## 函数与类型
 
