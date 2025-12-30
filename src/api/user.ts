@@ -15,7 +15,7 @@ export type LoginForm = {
 export type RegisterForm = {
   name: string
   password: string
-  secret: string
+  registrationKey: string
 }
 
 export type LoginResponse = {
