@@ -18,9 +18,14 @@ declare module 'vue' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    MenuList: typeof import('./src/components/MenuList.vue')['default']
+    PipeIcon: typeof import('./src/components/icons/PipeIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SettingsIcon: typeof import('./src/components/icons/SettingsIcon.vue')['default']
     Test: typeof import('./src/components/Test.vue')['default']
+    WorldviewsIcon: typeof import('./src/components/icons/WorldviewsIcon.vue')['default']
+    WritersIcon: typeof import('./src/components/icons/WritersIcon.vue')['default']
   }
 }
 
@@ -32,7 +37,12 @@ declare global {
   const ElIcon: typeof import('element-plus/es')['ElIcon']
   const ElInput: typeof import('element-plus/es')['ElInput']
   const ElTooltip: typeof import('element-plus/es')['ElTooltip']
+  const MenuList: typeof import('./src/components/MenuList.vue')['default']
+  const PipeIcon: typeof import('./src/components/icons/PipeIcon.vue')['default']
   const RouterLink: typeof import('vue-router')['RouterLink']
   const RouterView: typeof import('vue-router')['RouterView']
+  const SettingsIcon: typeof import('./src/components/icons/SettingsIcon.vue')['default']
   const Test: typeof import('./src/components/Test.vue')['default']
+  const WorldviewsIcon: typeof import('./src/components/icons/WorldviewsIcon.vue')['default']
+  const WritersIcon: typeof import('./src/components/icons/WritersIcon.vue')['default']
 }

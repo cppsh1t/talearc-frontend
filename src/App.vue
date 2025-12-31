@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-100vh flex box-border relative overflow-hidden">
-    <MenuList class="shrink-0" />
+    <MenuList v-if="isLoggedIn" class="shrink-0" />
     <div class="w-full h-full">
       <Transition name="page">
         <RouterView />
@@ -10,8 +10,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useUserStore } from '@/stores/user'
+import MenuList from '@/components/MenuList.vue'
 
-
+const userStore = useUserStore()
+const isLoggedIn = computed(() => userStore.isLoggedIn)
 </script>
 
 <style scoped>

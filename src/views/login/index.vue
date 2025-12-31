@@ -170,7 +170,7 @@ async function handleLogin() {
       const res = await withDisplay(login(loginForm), '登录成功', '登录失败')
       userStore.setToken(res.data.token)
       userStore.setUser(res.data.user)
-      router.push({ name: 'home' })
+      router.push({ name: 'worldviews' })
     } finally {
       loading.value = false
     }
@@ -189,7 +189,7 @@ async function handleRegister() {
       const res = await withDisplay(register(formData), '注册成功', '注册失败')
       userStore.setToken(res.data.token)
       userStore.setUser(res.data.user)
-      router.push({ name: 'home' })
+      router.push({ name: 'worldviews' })
     } finally {
       loading.value = false
     }
