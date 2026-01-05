@@ -13,13 +13,10 @@
       </template>
       <!-- 收缩按钮 -->
       <button
-        class="w-24px h-24px flex items-center justify-center rounded-6px hover:bg-gray-100 transition-colors cursor-pointer"
+        class="w-24px h-24px flex items-center justify-center rounded-6px border-none bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
         :class="isCollapsed ? '' : 'absolute right-12px'" @click="toggleCollapse">
-        <svg class="w-16px h-16px text-gray-600 transition-transform duration-300"
-          :class="{ 'rotate-180': isCollapsed }" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
+        <CollapseIcon class="w-16px h-16px text-gray-600 transition-transform duration-300"
+          :class="{ 'rotate-180': isCollapsed }" />
       </button>
     </div>
 
@@ -41,6 +38,7 @@ import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { menuRoutes } from '@/router'
 import QuillIcon from '@/components/icons/QuillIcon.vue'
+import CollapseIcon from '@/components/icons/CollapseIcon.vue'
 
 const router = useRouter()
 const route = useRoute()

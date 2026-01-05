@@ -12,6 +12,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    CollapseIcon: typeof import('./src/components/icons/CollapseIcon.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -32,6 +33,7 @@ declare module 'vue' {
 
 // For TSX support
 declare global {
+  const CollapseIcon: typeof import('./src/components/icons/CollapseIcon.vue')['default']
   const ElButton: typeof import('element-plus/es')['ElButton']
   const ElForm: typeof import('element-plus/es')['ElForm']
   const ElFormItem: typeof import('element-plus/es')['ElFormItem']
