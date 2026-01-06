@@ -1,9 +1,8 @@
 <template>
-  <el-card class="relative hover:shadow-md transition-shadow cursor-pointer group" :body-style="{ padding: '16px' }"
-    @click="handleClick">
+  <el-card class="relative hover:shadow-md transition-shadow cursor-pointer group" :body-style="{ padding: '16px' }">
     <div class="flex justify-between items-start mb-2">
-      <h3 class="text-lg font-semibold truncate flex-1 mr-2" :title="data.name || ''">
-        {{ data.name }}
+      <h3 class="text-lg font-semibold truncate flex-1 mr-2" :title="data.title || ''">
+        {{ data.title }}
       </h3>
       <el-dropdown trigger="click" @command="handleCommand">
         <div class="p-1 hover:bg-gray-100 rounded cursor-pointer" @click.stop>
@@ -25,39 +24,25 @@
     <div class="text-xs text-gray-400 mt-2 flex justify-between items-center">
       <span>{{ formatDate(data.updatedAt) }}</span>
     </div>
-    <div class="flex gap-2 mt-3 flex-wrap">
-      <el-tag class="cursor-pointer hover:opacity-80" @click.stop="navigateTo('character')">角色</el-tag>
-      <el-tag class="cursor-pointer hover:opacity-80" type="success" @click.stop="navigateTo('event')">事件</el-tag>
-      <el-tag class="cursor-pointer hover:opacity-80" type="warning" @click.stop="navigateTo('misc')">杂项</el-tag>
-      <el-tag class="cursor-pointer hover:opacity-80" type="info" @click.stop="navigateTo('novel')">小说</el-tag>
-    </div>
   </el-card>
 </template>
 
 <script setup lang="ts">
 import { MoreFilled } from '@element-plus/icons-vue'
-import type { WorldView } from '@/api/worldview'
+import type { Novel } from '@/api/novel'
 import dayjs from 'dayjs'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
 
 const props = defineProps<{
-  data: WorldView
+  data: Novel
 }>()
 
 const emit = defineEmits<{
-  (e: 'click', item: WorldView): void
-  (e: 'edit', item: WorldView): void
-  (e: 'delete', item: WorldView): void
+  (e: 'edit', item: Novel): void
+  (e: 'delete', item: Novel): void
 }>()
 
 function formatDate(date: string) {
   return dayjs(date).format('YYYY-MM-DD HH:mm')
-}
-
-function handleClick() {
-  emit('click', props.data)
 }
 
 function handleCommand(command: string | number | object) {
@@ -66,19 +51,6 @@ function handleCommand(command: string | number | object) {
   } else if (command === 'delete') {
     emit('delete', props.data)
   }
-}
-
-function navigateTo(type: 'character' | 'event' | 'misc' | 'novel') {
-  const routeMap = {
-    character: 'WorldViewCharacter',
-    event: 'WorldViewEvent',
-    misc: 'WorldViewMisc',
-    novel: 'WorldViewNovel'
-  }
-  router.push({
-    name: routeMap[type],
-    query: { worldViewId: props.data.id }
-  })
 }
 </script>
 

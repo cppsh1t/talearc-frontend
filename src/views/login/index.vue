@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { type FormInstance, type FormRules } from 'element-plus'
 import { QuestionFilled, InfoFilled } from '@element-plus/icons-vue'
@@ -98,12 +98,12 @@ const isLogin = ref(true)
 const loginFormRef = ref<FormInstance>()
 const registerFormRef = ref<FormInstance>()
 
-const loginForm = reactive<LoginForm>({
+const loginForm = ref<LoginForm>({
   name: '',
   password: ''
 })
 
-const registerForm = reactive<RegisterForm & { confirmPassword: string }>({
+const registerForm = ref<RegisterForm & { confirmPassword: string }>({
   name: '',
   password: '',
   confirmPassword: '',
@@ -124,7 +124,7 @@ const loginRules: FormRules = {
 const validateConfirmPassword = (rule: any, value: string, callback: any) => {
   if (value === '') {
     callback(new Error('请确认密码'))
-  } else if (value !== registerForm.password) {
+  } else if (value !== registerForm.value.password) {
     callback(new Error('两次输入的密码不一致'))
   } else {
     callback()
@@ -167,7 +167,7 @@ async function handleLogin() {
 
     loading.value = true
 
-    const res = await withDisplay(login(loginForm), '登录成功', '登录失败')
+    const res = await withDisplay(login(loginForm.value), '登录成功', '登录失败')
     if (res) {
       userStore.setToken(res.data.token)
       userStore.setUser(res.data.user)
@@ -186,7 +186,7 @@ async function handleRegister() {
 
     loading.value = true
 
-    const { confirmPassword, ...formData } = registerForm
+    const { confirmPassword, ...formData } = registerForm.value
     const res = await withDisplay(register(formData), '注册成功', '注册失败')
     if (res) {
       userStore.setToken(res.data.token)

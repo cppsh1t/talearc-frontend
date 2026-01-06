@@ -53,6 +53,10 @@ emit规范:
 const emit = defineEmits<{ (e: 'cb', v: string): void (e: 'click'): void }>()
 ```
 
+**状态与类型规范**
+- **严禁使用 `reactive`**，统一使用 `ref` 来定义响应式数据。
+- **严禁在 form 中使用 `any` 类型**。例如 `ref({...})` 是禁止的，必须显式指定类型：`ref<XXX>({...})`。
+
 ## 错误处理规范
 
 使用utils/displayError中的withDisplay来catch错误并进行必要情况下的错误提示

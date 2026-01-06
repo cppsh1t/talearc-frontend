@@ -54,6 +54,30 @@ const router = createRouter({
       meta: { requiresAuth: true },
     })),
     {
+      path: '/worldviews/character',
+      name: 'WorldViewCharacter',
+      component: () => import('@/views/worldviews/character/index.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/worldviews/event',
+      name: 'WorldViewEvent',
+      component: () => import('@/views/worldviews/event/index.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/worldviews/misc',
+      name: 'WorldViewMisc',
+      component: () => import('@/views/worldviews/misc/index.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/worldviews/novel',
+      name: 'WorldViewNovel',
+      component: () => import('@/views/worldviews/novel/index.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/test',
       name: 'test',
       component: () => import('@/views/test/index.vue'),

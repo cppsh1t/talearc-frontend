@@ -24,9 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, watch } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
-import { createWorldView, updateWorldView, type WorldView } from '@/api/worldview'
+import { createWorldView, updateWorldView, type WorldView, type CreateWorldViewRequest } from '@/api/worldview'
 import { withDisplay } from '@/utils/displayError'
 
 const props = defineProps<{
@@ -43,7 +43,7 @@ const emit = defineEmits<{
 const formRef = ref<FormInstance>()
 const submitting = ref(false)
 
-const form = reactive({
+const form = ref<CreateWorldViewRequest>({
   name: '',
   description: '',
   notes: ''
@@ -58,13 +58,13 @@ watch(
   (val) => {
     if (val) {
       if (props.type === 'edit' && props.data) {
-        form.name = props.data.name || ''
-        form.description = props.data.description || ''
-        form.notes = props.data.notes || ''
+        form.value.name = props.data.name || ''
+        form.value.description = props.data.description || ''
+        form.value.notes = props.data.notes || ''
       } else {
-        form.name = ''
-        form.description = ''
-        form.notes = ''
+        form.value.name = ''
+        form.value.description = ''
+        form.value.notes = ''
       }
     }
   }
@@ -82,9 +82,9 @@ async function handleSubmit() {
 
       let res
       if (props.type === 'create') {
-        res = await withDisplay(createWorldView(form), '创建成功')
+        res = await withDisplay(createWorldView(form.value), '创建成功')
       } else if (props.data?.id) {
-        res = await withDisplay(updateWorldView(props.data.id, form), '更新成功')
+        res = await withDisplay(updateWorldView(props.data.id, form.value), '更新成功')
       }
 
       if (res) {

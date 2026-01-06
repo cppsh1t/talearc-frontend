@@ -1,7 +1,16 @@
 <template>
   <div class="h-full flex flex-col bg-gray-50">
-    <!-- Header -->
-    <WorldViewHeader v-model="queryParams.keyword" @search="handleSearch" @create="handleAdd" />
+    <div class="p-4 bg-white shadow-sm flex items-center justify-between mb-2">
+      <div class="flex items-center gap-2">
+        <el-button @click="router.back()">返回</el-button>
+        <h2 class="text-lg font-bold">角色管理</h2>
+      </div>
+      <el-button type="primary" @click="handleAdd">
+        <el-icon class="mr-1">
+          <Plus />
+        </el-icon>新增角色
+      </el-button>
+    </div>
 
     <!-- Content -->
     <div class="flex-1 overflow-auto">
@@ -14,8 +23,7 @@
         暂无数据
       </div>
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        <WorldViewCard v-for="item in list" :key="item.id" :data="item" @click="handleCardClick" @edit="handleEdit"
-          @delete="handleDelete" />
+        <CharacterCard v-for="item in list" :key="item.id" :data="item" @edit="handleEdit" @delete="handleDelete" />
       </div>
     </div>
 
@@ -27,46 +35,52 @@
     </div>
 
     <!-- Dialog Component -->
-    <WorldViewDialog v-model:visible="dialogVisible" :type="dialogType" :data="currentWorldView" @success="fetchData" />
+    <CharacterDialog v-model:visible="dialogVisible" :type="dialogType" :data="currentCharacter"
+      :world-view-id="worldViewId" @success="fetchData" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { Loading } from '@element-plus/icons-vue'
+import { useRoute, useRouter } from 'vue-router'
+import { Loading, Plus } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import {
-  getWorldViewList,
-  deleteWorldView,
-  type WorldView
-} from '@/api/worldview'
-import type { PageForm } from '@/api/type'
+  getCharacterList,
+  deleteCharacter,
+  type Character,
+  type CharacterQuery
+} from '@/api/character'
 import { withDisplay } from '@/utils/displayError'
-import WorldViewDialog from './components/WorldViewDialog.vue'
-import WorldViewCard from './components/WorldViewCard.vue'
-import WorldViewHeader from './components/WorldViewHeader.vue'
+import CharacterDialog from './components/CharacterDialog.vue'
+import CharacterCard from './components/CharacterCard.vue'
 
-// Define a type for query params that extends PageForm and includes keyword
-type WorldViewPageForm = PageForm & { keyword?: string }
+const route = useRoute()
+const router = useRouter()
+const worldViewId = Number(route.query.worldViewId)
 
 const loading = ref(false)
-const list = ref<WorldView[]>([])
+const list = ref<Character[]>([])
 const total = ref(0)
 
-const queryParams = ref<WorldViewPageForm>({
+const queryParams = ref<CharacterQuery>({
   page: 1,
   size: 12,
-  keyword: ''
+  worldViewId: worldViewId
 })
 
 const dialogVisible = ref(false)
 const dialogType = ref<'create' | 'edit'>('create')
-const currentWorldView = ref<WorldView>()
+const currentCharacter = ref<Character>()
 
 async function fetchData() {
+  if (!worldViewId) {
+    ElMessage.error('缺少世界观ID')
+    return
+  }
   loading.value = true
   try {
-    const res = await getWorldViewList(queryParams.value)
+    const res = await getCharacterList(queryParams.value)
     list.value = res.data.list
     total.value = res.data.total
   } catch (error) {
@@ -74,12 +88,6 @@ async function fetchData() {
   } finally {
     loading.value = false
   }
-}
-
-function handleSearch() {
-  // Reset to first page when searching
-  queryParams.value.page = 1
-  fetchData()
 }
 
 function handlePageChange(val: number) {
@@ -95,40 +103,35 @@ function handleSizeChange(val: number) {
 
 function handleAdd() {
   dialogType.value = 'create'
-  currentWorldView.value = undefined
+  currentCharacter.value = undefined
   dialogVisible.value = true
 }
 
-function handleEdit(item: WorldView) {
+function handleEdit(item: Character) {
   dialogType.value = 'edit'
-  currentWorldView.value = item
+  currentCharacter.value = item
   dialogVisible.value = true
 }
 
-async function handleDelete(item: WorldView) {
+async function handleDelete(item: Character) {
   try {
-    await ElMessageBox.confirm('确定要删除该世界观吗？', '提示', {
+    await ElMessageBox.confirm('确定要删除该角色吗？', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     })
 
-    const res = await withDisplay(deleteWorldView(item.id), '删除成功')
+    const res = await withDisplay(deleteCharacter(item.id), '删除成功')
 
     if (res) {
-      // Check if we need to go back a page
       if (list.value.length === 1 && queryParams.value.page > 1) {
         queryParams.value.page--
       }
       fetchData()
     }
   } catch (e) {
-    // User cancelled or error occurred
+    // Cancelled
   }
-}
-
-function handleCardClick(item: WorldView) {
-  // Placeholder for future navigation
 }
 
 onMounted(() => {
