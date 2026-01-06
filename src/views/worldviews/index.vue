@@ -34,7 +34,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Loading } from '@element-plus/icons-vue'
-import { ElMessageBox } from 'element-plus'
 import {
   getWorldViewPage,
   deleteWorldView,

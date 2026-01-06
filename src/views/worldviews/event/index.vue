@@ -41,7 +41,6 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Loading, Plus } from '@element-plus/icons-vue'
-import { ElMessageBox } from 'element-plus'
 import {
   getWorldEventPage,
   deleteWorldEvent,

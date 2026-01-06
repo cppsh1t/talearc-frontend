@@ -46,7 +46,6 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Loading, Plus } from '@element-plus/icons-vue'
-import { ElMessageBox } from 'element-plus'
 import { getNovelList, deleteNovel, type Novel } from '@/api/novel'
 import { withDisplay } from '@/utils/displayError'
 import NovelDialog from './components/NovelDialog.vue'
