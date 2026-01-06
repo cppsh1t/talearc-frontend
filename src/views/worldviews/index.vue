@@ -13,7 +13,7 @@
       <div v-else-if="list.length === 0" class="flex justify-center items-center h-full text-gray-400">
         暂无数据
       </div>
-      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-1">
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         <WorldViewCard v-for="item in list" :key="item.id" :data="item" @click="handleCardClick" @edit="handleEdit"
           @delete="handleDelete" />
       </div>

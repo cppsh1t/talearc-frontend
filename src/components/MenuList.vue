@@ -26,7 +26,7 @@
         class="h-48px mx-12px mb-8px flex items-center cursor-pointer rounded-8px text-gray-700 hover:bg-gray-50 transition-colors duration-200"
         :class="[{ 'is-active': currentRoute === item.name }, isCollapsed ? 'px-0 justify-center' : 'px-16px']"
         @click="handleMenuClick(item.name)">
-        <component :is="item.icon" class="flex-shrink-0" :class="isCollapsed ? '' : 'mr-12px'" />
+        <component :is="item.icon" class="flex-shrink-0 size-20px" :class="isCollapsed ? '' : 'mr-12px'" />
         <span v-show="!isCollapsed" class="text-15px">{{ item.label }}</span>
       </div>
     </div>
