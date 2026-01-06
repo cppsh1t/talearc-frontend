@@ -166,14 +166,15 @@ async function handleLogin() {
     if (!valid) return
 
     loading.value = true
-    try {
-      const res = await withDisplay(login(loginForm), '登录成功', '登录失败')
+
+    const res = await withDisplay(login(loginForm), '登录成功', '登录失败')
+    if (res) {
       userStore.setToken(res.data.token)
       userStore.setUser(res.data.user)
       router.push({ name: 'worldviews' })
-    } finally {
-      loading.value = false
     }
+
+    loading.value = false
   })
 }
 
@@ -184,15 +185,16 @@ async function handleRegister() {
     if (!valid) return
 
     loading.value = true
-    try {
-      const { confirmPassword, ...formData } = registerForm
-      const res = await withDisplay(register(formData), '注册成功', '注册失败')
+
+    const { confirmPassword, ...formData } = registerForm
+    const res = await withDisplay(register(formData), '注册成功', '注册失败')
+    if (res) {
       userStore.setToken(res.data.token)
       userStore.setUser(res.data.user)
       router.push({ name: 'worldviews' })
-    } finally {
-      loading.value = false
     }
+
+    loading.value = false
   })
 }
 </script>

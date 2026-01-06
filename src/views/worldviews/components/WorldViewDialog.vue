@@ -1,22 +1,12 @@
 <template>
-  <el-dialog
-    :model-value="visible"
-    :title="type === 'create' ? '新增世界观' : '编辑世界观'"
-    width="500px"
-    destroy-on-close
-    @update:model-value="emit('update:visible', $event)"
-  >
+  <el-dialog :model-value="visible" :title="type === 'create' ? '新增世界观' : '编辑世界观'" width="500px" destroy-on-close
+    @update:model-value="emit('update:visible', $event)">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入世界观名称" />
       </el-form-item>
       <el-form-item label="描述" prop="description">
-        <el-input
-          v-model="form.description"
-          type="textarea"
-          :rows="3"
-          placeholder="请输入描述"
-        />
+        <el-input v-model="form.description" type="textarea" :rows="3" placeholder="请输入描述" />
       </el-form-item>
       <el-form-item label="备注" prop="notes">
         <el-input v-model="form.notes" placeholder="请输入备注" />
@@ -89,19 +79,20 @@ async function handleSubmit() {
   await formRef.value.validate(async (valid) => {
     if (valid) {
       submitting.value = true
-      try {
-        if (props.type === 'create') {
-          await withDisplay(createWorldView(form), '创建成功')
-        } else if (props.data?.id) {
-          await withDisplay(updateWorldView(props.data.id, form), '更新成功')
-        }
+
+      let res
+      if (props.type === 'create') {
+        res = await withDisplay(createWorldView(form), '创建成功')
+      } else if (props.data?.id) {
+        res = await withDisplay(updateWorldView(props.data.id, form), '更新成功')
+      }
+
+      if (res) {
         emit('success')
         emit('update:visible', false)
-      } catch (e) {
-        // Error already handled
-      } finally {
-        submitting.value = false
       }
+
+      submitting.value = false
     }
   })
 }

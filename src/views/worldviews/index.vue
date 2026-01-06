@@ -113,13 +113,15 @@ async function handleDelete(item: WorldView) {
       type: 'warning'
     })
 
-    await withDisplay(deleteWorldView(item.id), '删除成功')
+    const res = await withDisplay(deleteWorldView(item.id), '删除成功')
 
-    // Check if we need to go back a page
-    if (list.value.length === 1 && queryParams.page > 1) {
-      queryParams.page--
+    if (res) {
+      // Check if we need to go back a page
+      if (list.value.length === 1 && queryParams.page > 1) {
+        queryParams.page--
+      }
+      fetchData()
     }
-    fetchData()
   } catch (e) {
     // User cancelled or error occurred
   }

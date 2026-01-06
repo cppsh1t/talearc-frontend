@@ -14,11 +14,11 @@ export async function withDisplay<T>(
   return promise.then(
     (result) => {
       ElMessage.success(success)
-      return Promise.resolve(result)
+      return result
     },
     (reason: Error) => {
       ElMessage.error(fail ?? reason.message)
-      throw reason
+      return undefined
     },
   )
 }
