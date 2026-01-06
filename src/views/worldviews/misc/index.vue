@@ -43,7 +43,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Loading, Plus } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import {
-  getMiscList,
+  getMiscPage,
   deleteMisc,
   type Misc,
   type MiscQuery
@@ -77,7 +77,7 @@ async function fetchData() {
   }
   loading.value = true
   try {
-    const res = await getMiscList(queryParams.value)
+    const res = await getMiscPage(queryParams.value)
     list.value = res.data.list
     total.value = res.data.total
   } catch (error) {

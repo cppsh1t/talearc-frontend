@@ -3,7 +3,7 @@ import type { Response } from './type'
 
 export type User = {
   id: number
-  name: string
+  name: string | null
   createAt: string
 }
 

@@ -43,7 +43,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Loading, Plus } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import {
-  getWorldEventList,
+  getWorldEventPage,
   deleteWorldEvent,
   type WorldEvent,
   type WorldEventQuery
@@ -77,7 +77,7 @@ async function fetchData() {
   }
   loading.value = true
   try {
-    const res = await getWorldEventList(queryParams.value)
+    const res = await getWorldEventPage(queryParams.value)
     list.value = res.data.list
     total.value = res.data.total
   } catch (error) {

@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :model-value="visible" :title="type === 'create' ? '新增小说' : '编辑小说'" width="500px" @update:model-value="handleUpdateVisible"
-    @close="handleClose">
+  <el-dialog :model-value="visible" :title="type === 'create' ? '新增小说' : '编辑小说'" width="500px"
+    @update:model-value="handleUpdateVisible" @close="handleClose">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="标题" prop="title">
         <el-input v-model="form.title" placeholder="请输入小说标题" />
@@ -98,7 +98,6 @@ async function handleSubmit() {
         } else if (props.data) {
           await withDisplay(
             updateNovel(props.data.id, {
-              worldViewId: props.worldViewId,
               title: form.value.title,
               description: form.value.description
             }),

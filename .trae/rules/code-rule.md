@@ -67,6 +67,14 @@ const emit = defineEmits<{ (e: 'cb', v: string): void (e: 'click'): void }>()
 - 必须使用 `function xxx(params: Type) {}` 的声明方式，禁止使用 `const xxx = () => {}` 的变量赋值形式。
 - 分页查询参数必须使用 `PageForm` 类型或其扩展类型。
 - 异步操作**必须**使用 `async/await` 语法，严禁使用 `.then` 链式调用（除非是特殊的库要求）。
+- 函数命名：
+  - 分页列表：`getXXXPage(params: PageForm | 扩展类型)` 返回 `PageResponse<XXX>`
+  - 全量列表：`getXXXList(params?: { ... })` 返回 `Response<XXX[]>`
+  - 详情：`getXXXDetail(id: number)` 返回 `Response<XXX>`
+  - 创建：`createXXX(data: CreateXXXRequest)` 返回 `Response<XXX>`
+  - 更新：`updateXXX(id: number, data: UpdateXXXRequest)` 返回 `Response<XXX>`
+  - 删除：`deleteXXX(id: number)` 返回 `Response<null>`
+  - 请求/响应类型命名：`CreateXXXRequest`、`UpdateXXXRequest`、实体为 `XXX` 或 `XXXResponse`（以后端定义为准）
 
 **类型规范**
 - 通用的类型文件保存在/api/type.ts,不同api模块的函数和类型保存在/api/\*.ts。

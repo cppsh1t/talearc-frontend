@@ -35,7 +35,7 @@ export type WorldEventQuery = PageForm<{
   worldViewId?: number
 }>
 
-export function getWorldEventList(params: WorldEventQuery) {
+export function getWorldEventPage(params: WorldEventQuery) {
   return request<PageResponse<WorldEvent>>({
     url: '/world-event',
     method: 'GET',

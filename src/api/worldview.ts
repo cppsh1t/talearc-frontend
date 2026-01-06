@@ -15,18 +15,18 @@ export interface WorldView {
 }
 
 export interface CreateWorldViewRequest {
-  name: string
-  description?: string
-  notes?: string
+  name?: string | null
+  description?: string | null
+  notes?: string | null
 }
 
 export interface UpdateWorldViewRequest {
-  name?: string
-  description?: string
-  notes?: string
+  name?: string | null
+  description?: string | null
+  notes?: string | null
 }
 
-export function getWorldViewList(params: PageForm) {
+export function getWorldViewPage(params: PageForm) {
   return request<PageResponse<WorldView>>({
     url: '/world-view',
     method: 'GET',

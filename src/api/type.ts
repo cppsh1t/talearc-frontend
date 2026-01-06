@@ -1,6 +1,6 @@
 export type Response<T = unknown> = {
   code: number
-  message: string
+  message: string | null
   data: T
 }
 

@@ -14,22 +14,22 @@ export interface Misc {
 
 export interface CreateMiscRequest {
   worldViewId: number
-  name: string
-  description?: string
-  type?: string
+  name?: string | null
+  description?: string | null
+  type?: string | null
 }
 
 export interface UpdateMiscRequest {
-  name?: string
-  description?: string
-  type?: string
+  name?: string | null
+  description?: string | null
+  type?: string | null
 }
 
 export type MiscQuery = PageForm<{
   worldViewId?: number
 }>
 
-export function getMiscList(params: MiscQuery) {
+export function getMiscPage(params: MiscQuery) {
   return request<PageResponse<Misc>>({
     url: '/misc',
     method: 'GET',

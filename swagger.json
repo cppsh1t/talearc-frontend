@@ -1641,17 +1641,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Novel"
+                "$ref": "#/components/schemas/CreateNovelRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Novel"
+                "$ref": "#/components/schemas/CreateNovelRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Novel"
+                "$ref": "#/components/schemas/CreateNovelRequest"
               }
             }
           }
@@ -1673,6 +1673,26 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NovelApiResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "世界观不存在",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectApiResponse"
                 }
               }
             }
@@ -1761,17 +1781,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Novel"
+                "$ref": "#/components/schemas/UpdateNovelRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Novel"
+                "$ref": "#/components/schemas/UpdateNovelRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Novel"
+                "$ref": "#/components/schemas/UpdateNovelRequest"
               }
             }
           }
@@ -3231,6 +3251,32 @@
         "additionalProperties": false,
         "description": "创建杂项请求"
       },
+      "CreateNovelRequest": {
+        "required": ["title", "worldViewId"],
+        "type": "object",
+        "properties": {
+          "worldViewId": {
+            "type": "integer",
+            "description": "世界观ID",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "description": "小说标题"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "小说简介",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "创建小说请求"
+      },
       "CreateWorldEventRequest": {
         "type": "object",
         "properties": {
@@ -3704,6 +3750,27 @@
         },
         "additionalProperties": false,
         "description": "更新杂项请求"
+      },
+      "UpdateNovelRequest": {
+        "required": ["title"],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "description": "小说标题"
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "description": "小说简介",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新小说请求"
       },
       "UpdateWorldEventRequest": {
         "type": "object",

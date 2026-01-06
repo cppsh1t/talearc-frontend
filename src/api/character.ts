@@ -30,7 +30,7 @@ export type CharacterQuery = PageForm<{
   worldViewId?: number
 }>
 
-export function getCharacterList(params: CharacterQuery) {
+export function getCharacterPage(params: CharacterQuery) {
   return request<PageResponse<Character>>({
     url: '/character',
     method: 'GET',

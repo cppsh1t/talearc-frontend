@@ -47,11 +47,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Loading, Plus } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
-import {
-  getNovelListAll,
-  deleteNovel,
-  type Novel
-} from '@/api/novel'
+import { getNovelList, deleteNovel, type Novel } from '@/api/novel'
 import { withDisplay } from '@/utils/displayError'
 import NovelDialog from './components/NovelDialog.vue'
 import NovelCard from './components/NovelCard.vue'
@@ -74,8 +70,7 @@ async function fetchData() {
   }
   loading.value = true
   try {
-    const res = await getNovelListAll(worldViewId)
-    // res.data is Novel[] directly
+    const res = await getNovelList({ worldViewId })
     list.value = res.data || []
   } catch (error) {
     if (error instanceof Error) ElMessage.error(error.message)

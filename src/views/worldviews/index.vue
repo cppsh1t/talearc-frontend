@@ -36,7 +36,7 @@ import { ref, onMounted } from 'vue'
 import { Loading } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import {
-  getWorldViewList,
+  getWorldViewPage,
   deleteWorldView,
   type WorldView
 } from '@/api/worldview'
@@ -66,7 +66,7 @@ const currentWorldView = ref<WorldView>()
 async function fetchData() {
   loading.value = true
   try {
-    const res = await getWorldViewList(queryParams.value)
+    const res = await getWorldViewPage(queryParams.value)
     list.value = res.data.list
     total.value = res.data.total
   } catch (error) {
